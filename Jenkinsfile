@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Get_Sources') {
       steps {
-        git(url: 'git@github.com:saharon27/time_tracker.git', branch: 'master', credentialsId: 'Sharon_Github')
+        git(url: 'git@github.com:saharon27/time_tracker.git', branch: 'master', credentialsId: 'saharon_github_token')
       }
     }
 
