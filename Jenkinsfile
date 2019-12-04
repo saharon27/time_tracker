@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  tools {
+    maven 'Maven 3.6.3''
+  }
   stages {
     stage('Get_Sources') {
       steps {
@@ -10,6 +13,7 @@ pipeline {
     stage('Build_Source') {
       steps {
         echo 'Building Maven...'
+        
       }
     }
 
