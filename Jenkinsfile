@@ -19,12 +19,12 @@ pipeline {
         sh 'mvn -Dmaven.test.failure.ignore=true install'
       
     
-/*    stage('SonarQube analysis') {
+   stage('SonarQube analysis') {
       withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
       }
     }
-*/
+
     
 /*    stage('build && SonarQube analysis') {
             steps {
@@ -34,12 +34,12 @@ pipeline {
                     }
                   }
 */       
-                withSonarQubeEnv('SonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
+//                withSonarQubeEnv('SonarQube') {
+//                    sh "${scannerHome}/bin/sonar-scanner"
+//                }
+//                timeout(time: 10, unit: 'MINUTES') {
+//                   waitForQualityGate abortPipeline: true
+//                }
             }
     }
   }
