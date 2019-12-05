@@ -17,16 +17,18 @@ pipeline {
       steps {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true install'
-      
+        withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
+          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
+        }
     
-   stage('SonarQube analysis') {
+/*   stage('SonarQube analysis') {
      steps {
       withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
       }
      }
     }
-
+*/
     
 /*    stage('build && SonarQube analysis') {
             steps {
