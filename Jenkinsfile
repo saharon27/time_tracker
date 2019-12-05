@@ -1,8 +1,10 @@
 pipeline {
   agent any
+  environment {
+    scannerHome = tool 'SonarQube_Runner'
+  }
   tools {
     maven 'Maven 3.6.3'
-    hudson.plugins.sonar.SonarRunnerInstallation 'SonarQube_Runner'
   }
   stages {
     stage('Get_Sources') {
@@ -11,35 +13,34 @@ pipeline {
       }
     }
 
-/*    stage('Build_Source') {
+    stage('build && SonarQube analysis') {
       steps {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true install'
       }
     }
-    stage('SonarQube analysis') {
+/*    stage('SonarQube analysis') {
       withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
       }
     }
 */
     
-    stage('build && SonarQube analysis') {
+/*    stage('build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                        sh 'mvn clean package sonar:sonar'
+                        sh 'mvn clean install sonar:sonar'
+                  sh "${scannerHome}/bin/sonar-scanner"
                     }
                   }
-        }
-        stage("Quality Gate") {
+*/       
             steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
-            }
-        }
     
   }
 }
