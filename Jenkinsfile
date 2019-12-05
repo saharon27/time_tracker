@@ -20,7 +20,8 @@ pipeline {
         withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
           sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
-    
+      }
+    }
 /*   stage('SonarQube analysis') {
      steps {
       withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
@@ -29,7 +30,12 @@ pipeline {
      }
     }
 */
-    
+    stage('Publish war file to nexus') {
+      steps{
+        nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [], tagName: 'timetracker'
+      }
+    }
+          
 /*    stage('build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
@@ -44,7 +50,5 @@ pipeline {
 //                timeout(time: 10, unit: 'MINUTES') {
 //                   waitForQualityGate abortPipeline: true
 //                }
-            }
-    }
   }
 }
