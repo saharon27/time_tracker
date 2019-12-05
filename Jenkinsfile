@@ -16,7 +16,7 @@ pipeline {
     stage('build && SonarQube analysis') {
       steps {
         echo 'Building Maven...'
-        sh 'mvn -Dmaven.test.failure.ignore=true install'
+        sh 'mvn -Dmaven.test.failure.ignore=true package'
         withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
           sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
@@ -32,7 +32,7 @@ pipeline {
 */
     stage('Publish war file to nexus') {
       steps{
-        nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [], tagName: 'timetracker'
+        nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/jenkins_home/workspace/time_tracker/web/target/time-tracker-web-0.3.1.war']], mavenCoordinate: [artifactId: 'time-tracker-parent', groupId: 'clinic.programming.time-tracker', packaging: 'pom', version: '0.3.1']]], tagName: 'time_tracker'
       }
     }
           
