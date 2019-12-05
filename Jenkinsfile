@@ -2,6 +2,7 @@ pipeline {
   agent any
   tools {
     maven 'Maven 3.6.3'
+    sonarqube 'SonarQube_Runner'
   }
   stages {
     stage('Get_Sources') {
