@@ -5,8 +5,8 @@ pipeline {
   }
   tools {
     maven 'Maven 3.6.3'
-    org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
   }
+  
   stages {
     stage('Get_Sources') {
       steps {
@@ -42,7 +42,11 @@ pipeline {
     stage('Dockerize App') {
       steps{
         echo "Creating Docker image..."
-        sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+        def customImage = docker.build("time-tracker:0.3.1")
+     //   customImage.push()
+
+       // customImage.push('latest')
+        //sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
       }
     }
     
