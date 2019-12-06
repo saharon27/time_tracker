@@ -35,7 +35,22 @@ pipeline {
         nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: 'war', filePath: '/var/jenkins_home/workspace/time_tracker/web/target/time-tracker-web-0.3.1.war']], mavenCoordinate: [artifactId: 'time-tracker-parent', groupId: 'clinic.programming.time-tracker', packaging: 'war', version: '0.3.1']]]
       }
     }
-          
+
+    
+/*    post {
+      success {
+          mail to: 'team@example.com',
+                  subject: "passed Pipeline: ${currentBuild.fullDisplayName}",
+                  body: "Something is OK with ${env.BUILD_URL}"
+        }
+      failure {
+          // notify users when the Pipeline fails
+          mail to: 'team@example.com',
+                  subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                  body: "Something is wrong with ${env.BUILD_URL}"
+        }
+    }
+*/    
 /*    stage('build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
