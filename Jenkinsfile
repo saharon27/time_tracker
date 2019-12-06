@@ -5,7 +5,7 @@ pipeline {
   }
   tools {
     maven 'Maven 3.6.3'
-    docker 'Docker'
+    org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
   }
   stages {
     stage('Get_Sources') {
@@ -47,7 +47,9 @@ pipeline {
     }
     
     stage('Upload Docker to Nexus Repository') {
-      echo "Uploading Docker image to Nexus Repository..."
+      steps{
+        echo "Uploading Docker image to Nexus Repository..."
+      }
     }
 /*    post {
       success {
