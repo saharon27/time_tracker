@@ -5,6 +5,7 @@ pipeline {
   }
   tools {
     maven 'Maven 3.6.3'
+    docker 'Docker'
   }
   stages {
     stage('Get_Sources') {
@@ -17,6 +18,7 @@ pipeline {
       steps {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true package'
+        echo "Scanning with SonarQube..."
         withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
           sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
@@ -32,11 +34,21 @@ pipeline {
 */
     stage('Publish war file to nexus') {
       steps{
+        echo "Publish war file to Nexus Maven-Releases repository..."
         nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: 'war', filePath: '/var/jenkins_home/workspace/time_tracker/web/target/time-tracker-web-0.3.1.war']], mavenCoordinate: [artifactId: 'time-tracker-parent', groupId: 'clinic.programming.time-tracker', packaging: 'war', version: '0.3.1']]]
       }
     }
 
+    stage('Dockerize App') {
+      steps{
+        echo "Creating Docker image..."
+        sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+      }
+    }
     
+    stage('Upload Docker to Nexus Repository') {
+      echo "Uploading Docker image to Nexus Repository..."
+    }
 /*    post {
       success {
           mail to: 'team@example.com',
