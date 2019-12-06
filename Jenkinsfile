@@ -1,3 +1,6 @@
+// Define variable
+def time_tracker_Image
+
 pipeline {
   agent any
   environment {
@@ -42,7 +45,7 @@ pipeline {
     stage('Dockerize App') {
       steps{
         echo "Creating Docker image..."
-        def customImage = docker.build("time-tracker:0.3.1")
+        time_tracker_Image = docker.build("time-tracker:0.3.1")
      //   customImage.push()
 
        // customImage.push('latest')
