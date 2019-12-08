@@ -2,7 +2,14 @@
 def time_tracker_Image
 
 pipeline {
-  agent any
+  agent {
+    docker {
+      containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+    }
+  }
+
+    
+
   environment {
     scannerHome = tool 'SonarQube_Runner'
   }
