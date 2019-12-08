@@ -4,11 +4,7 @@ def time_tracker_Image
 pipeline {
   agent {
     docker {
-      containerTemplate {
-        name 'docker'
         image 'docker'
-        command 'cat'
-        ttyEnabled true
       }
     }
   }
