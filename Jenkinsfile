@@ -5,10 +5,10 @@ pipeline {
   agent {
     docker {
       containerTemplate {
-        name: 'docker'
-        image: 'docker'
-        command: 'cat'
-        ttyEnabled: true
+        name 'docker'
+        image 'docker'
+        command 'cat'
+        ttyEnabled true
       }
     }
   }
