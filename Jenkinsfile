@@ -17,8 +17,8 @@ pipeline {
                   tty: true
                   volumeMounts:
                     - name: dockervolume
-                      mountPath: '/var/run/docker.sock'
-                      hostPath: '/var/run/docker.sock'
+                      mountPath: 'var/run/docker.sock'
+                      hostPath: 'var/run/docker.sock'
                 - name: maven
                   image: maven:3.6.3-jdk-8-openj9
                   command:
@@ -26,8 +26,8 @@ pipeline {
                   tty: true
                   volumeMounts:
                     - name: dockervolume
-                      mountPath: '/var/run/docker.sock'
-                      hostPath: '/var/run/docker.sock'
+                      mountPath: 'var/run/docker.sock'
+                      hostPath: 'var/run/docker.sock'
                 volumes:
                   - name: dockervolume
               """
