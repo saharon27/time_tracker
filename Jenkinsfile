@@ -75,9 +75,10 @@ pipeline {
         container('docker') {
           echo "Creating Docker image..."
           script{
-                  docker.withRegistry('http://192.168.99.100:30008/repository/myOwnDocker-Registry', 'nexus_cred')
+                  docker.withRegistry('http://192.168.99.100:30008/repository/myOwnDocker-Registry', 'nexus_cred') {
                   time_tracker_Image = docker.build("time-tracker:0.3.1")
                   time_tracker_Image.push()
+                  }
                 }
 
 
