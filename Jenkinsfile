@@ -12,6 +12,10 @@ pipeline {
                 containers:
                 - name: docker
                   image: docker
+                  volumeMounts:
+                    - name: jenkins-docker
+                     mountPath: /var/run/docker.sock
+                     hostPath: /var/run/docker.sock
                   command:
                   - cat
                   tty: true
@@ -22,10 +26,7 @@ pipeline {
                   tty: true
               """
             }
-//    docker {
-//        image 'docker'
-//      }
-    }
+        }
   environment {
     scannerHome = tool 'SonarQubeRunner'
   }
