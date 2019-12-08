@@ -77,11 +77,12 @@ pipeline {
 //        script{
 //          time_tracker_Image = docker.build("time-tracker:0.3.1")
 //        }
-          //   customImage.push()
+          //   time_tracker_Image.push()
 
        // customImage.push('latest')
           echo "Creating Docker image..."
-          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+          time_tracker_Image = sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+          echo "time_tracker_image: ${time_tracker_image}"
         }
       }
     }
@@ -89,6 +90,9 @@ pipeline {
     stage('Upload Docker to Nexus Repository') {
       steps{
         echo "Uploading Docker image to Nexus Repository..."
+        sh 'http://192.168.99.100:30008/repository/myOwnDocker-Registry/'
+        sh 'docker push http://192.168.99.100:30008/repository/myOwnDocker-Registry/'
+        //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
       }
     }
 /*    post {
