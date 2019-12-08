@@ -16,20 +16,21 @@ pipeline {
                   - cat
                   tty: true
                   volumeMounts:
-                    - name: dockervolume
-                      mountPath: 'var/run/docker.sock'
-                      hostPath: 'var/run/docker.sock'
+                    - name: docker-sock
+                      mountPath: '/var/run/docker.sock'
                 - name: maven
                   image: maven:3.6.3-jdk-8-openj9
                   command:
                   - cat
                   tty: true
                   volumeMounts:
-                    - name: dockervolume
-                      mountPath: 'var/run/docker.sock'
-                      hostPath: 'var/run/docker.sock'
+                    - name: docker-sock
+                      mountPath: '/var/run/docker.sock'
                 volumes:
                   - name: dockervolume
+                    hostPath:
+                      path: '/var/run/docker.sock'
+                      type: File
               """
             }
         }
