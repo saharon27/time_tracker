@@ -45,7 +45,7 @@ pipeline {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true package'
         echo "Scanning with SonarQube..."
-        withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQubeRunner') {
+        withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
           sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
       }
