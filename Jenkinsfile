@@ -3,7 +3,7 @@ def time_tracker_Image
 
 pipeline {
   agent {
-          mypod {
+          docker {
             label 'dockerPod'
       yaml """
           apiVersion: v1
