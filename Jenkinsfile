@@ -78,6 +78,7 @@ pipeline {
 
        // customImage.push('latest')
           echo "Creating Docker image..."
+          sh 'service docker restart'
           sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
         }
       }
