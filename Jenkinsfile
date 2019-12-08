@@ -7,11 +7,6 @@ pipeline {
         image 'docker'
       }
     }
-  }
-
-
-    
-
   environment {
     scannerHome = tool 'SonarQube_Runner'
   }
