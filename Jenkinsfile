@@ -74,31 +74,27 @@ pipeline {
       steps{
         container('docker') {
           echo "Creating Docker image..."
-          script{
+/*          script{
                   docker.withRegistry('http://192.168.99.100:30008/repository/myOwnDocker-Registry', 'nexus_cred') {
                   time_tracker_Image = docker.build("time-tracker:0.3.1")
                   time_tracker_Image.push()
                   }
-                }
-
-
-       // customImage.push('latest')
-          
-          //sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+                }*/        
+          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
           //echo "time_tracker_image: ${time_tracker_image}"
         }
       }
     }
     
-/*    stage('Upload Docker to Nexus Repository') {
+    stage('Upload Docker to Nexus Repository') {
       steps{
         container('docker') {
           echo "Uploading Docker image to Nexus Repository..."
-          sh 'docker push http://192.168.99.100:30008/repository/myOwnDocker-Registry/sharon/time-tracker:0.3.1'
+          sh 'docker push http://192.168.99.100:30008/repository/myOwnDocker-Registry/sharon/time-tracker'
           //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
         }
       }
-    }*/
+    }
 /*    post {
       success {
           mail to: 'team@example.com',
