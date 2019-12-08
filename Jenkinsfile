@@ -41,11 +41,6 @@ pipeline {
   }
   
   stages {
-    stage('docker_test') {
-      steps{
-      sh 'docker ps'
-      }
-    }
     stage('docker container test') {
       steps{
         container('docker') {
