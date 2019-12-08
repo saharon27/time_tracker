@@ -3,9 +3,28 @@ def time_tracker_Image
 
 pipeline {
   agent {
-    docker {
-        image 'docker'
-      }
+          mypod {
+            label 'dockerPod'
+      yaml """
+          apiVersion: v1
+          kind: Pod
+          spec:
+            containers:
+            - name: docker
+              image: docker
+              command:
+              - cat
+              tty: true
+            - name: busybox
+              image: busybox
+              command:
+              - cat
+              tty: true
+          """
+          }
+//    docker {
+//        image 'docker'
+//      }
     }
   environment {
     scannerHome = tool 'SonarQube_Runner'
