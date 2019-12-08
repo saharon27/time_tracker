@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('Get_Sources') {
       steps {
-        git(url: 'https://github.com/saharon27/time_tracker.git', branch: 'master', credentialsId: 'saharon_github')
+        git(url: 'https://github.com/saharon27/time_tracker.git', branch: 'master', credentialsId: '	GitHub_Creds_HTTPS')
       }
     }
 
@@ -22,7 +22,7 @@ pipeline {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true package'
         echo "Scanning with SonarQube..."
-        withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
+        withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQubeRunner') {
           sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
       }
