@@ -15,8 +15,8 @@ pipeline {
                   command:
                   - cat
                   tty: true
-                - name: busybox
-                  image: busybox
+                - name: maven
+                  image: maven:3.6.3-jdk-8-alpine
                   command:
                   - cat
                   tty: true
