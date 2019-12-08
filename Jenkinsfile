@@ -3,12 +3,31 @@ def time_tracker_Image
 
 pipeline {
   agent {
-    docker {
-        image 'docker'
-      }
+          kubernetes {
+            label 'dockerPod'
+            yaml """
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: docker
+                  image: docker
+                  command:
+                  - cat
+                  tty: true
+                - name: maven
+                  image: maven:3.6.3-jdk-8-openj9
+                  command:
+                  - cat
+                  tty: true
+              """
+            }
+//    docker {
+//        image 'docker'
+//      }
     }
   environment {
-    scannerHome = tool 'SonarQube_Runner'
+    scannerHome = tool 'SonarQubeRunner'
   }
   tools {
     maven 'Maven 3.6.3'
@@ -17,7 +36,7 @@ pipeline {
   stages {
     stage('Get_Sources') {
       steps {
-        git(url: 'https://github.com/saharon27/time_tracker.git', branch: 'master', credentialsId: '	GitHub_Creds_HTTPS')
+        git(url: 'https://github.com/saharon27/time_tracker.git', branch: 'master', credentialsId: 'GitHub_Creds_HTTPS')
       }
     }
 
