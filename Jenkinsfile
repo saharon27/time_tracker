@@ -1,5 +1,3 @@
-// Define variable
-def time_tracker_Image
 
 pipeline {
   agent {
@@ -36,6 +34,7 @@ pipeline {
         }
   environment {
     scannerHome = tool 'SonarQubeRunner'
+    time_tracker_Image = ''
   }
   tools {
     maven 'Maven 3.6.3'
