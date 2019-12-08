@@ -16,7 +16,7 @@ pipeline {
                   - cat
                   tty: true
                 - name: maven
-                  image: maven:3.6.3-jdk-8-alpine
+                  image: maven:3.6.3-jdk-8-openj9
                   command:
                   - cat
                   tty: true
