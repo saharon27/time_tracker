@@ -27,7 +27,7 @@ pipeline {
 //      }
     }
   environment {
-    scannerHome = tool 'SonarQube_Runner'
+    scannerHome = tool 'SonarQubeRunner'
   }
   tools {
     maven 'Maven 3.6.3'
