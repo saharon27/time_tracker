@@ -12,13 +12,13 @@ pipeline {
                 containers:
                 - name: docker
                   image: docker
-                  volumeMounts:
-                    - name: jenkins-docker
-                     mountPath: /var/run/docker.sock
-                     hostPath: /var/run/docker.sock
                   command:
                   - cat
                   tty: true
+                  volumeMounts:
+                    - name: jenkins-docker
+                      mountPath: /var/run/docker.sock
+                      hostPath: /var/run/docker.sock
                 - name: maven
                   image: maven:3.6.3-jdk-8-openj9
                   command:
