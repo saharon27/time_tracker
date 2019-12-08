@@ -67,14 +67,16 @@ pipeline {
 
     stage('Dockerize App') {
       steps{
-        echo "Creating Docker image..."
+        container('docker') {
 //        script{
 //          time_tracker_Image = docker.build("time-tracker:0.3.1")
 //        }
           //   customImage.push()
 
        // customImage.push('latest')
-        sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+          echo "Creating Docker image..."
+          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
+        }
       }
     }
     
