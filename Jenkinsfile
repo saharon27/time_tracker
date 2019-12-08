@@ -3,25 +3,25 @@ def time_tracker_Image
 
 pipeline {
   agent {
-          docker {
+          kubernetes {
             label 'dockerPod'
-      yaml """
-          apiVersion: v1
-          kind: Pod
-          spec:
-            containers:
-            - name: docker
-              image: docker
-              command:
-              - cat
-              tty: true
-            - name: busybox
-              image: busybox
-              command:
-              - cat
-              tty: true
-          """
-          }
+            yaml """
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: docker
+                  image: docker
+                  command:
+                  - cat
+                  tty: true
+                - name: busybox
+                  image: busybox
+                  command:
+                  - cat
+                  tty: true
+              """
+            }
 //    docker {
 //        image 'docker'
 //      }
