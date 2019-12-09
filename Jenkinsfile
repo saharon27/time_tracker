@@ -47,24 +47,22 @@ pipeline {
       }
     }
 
-    stage('build && SonarQube analysis') {
+    stage('Build Maven') {
       steps {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true package'
-        echo "Scanning with SonarQube..."
-        withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
-          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
         }
       }
     }
-   stage('SonarQube analysis') {
+   stage('SonarQube Analysis') {
      steps {
-      withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
-        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
+       echo "Scanning with SonarQube..."
+       withSonarQubeEnv(credentialsId: 'SonarQube_Token', installationName: 'SonarQube') {
+       sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
       }
      }
     }
-    stage('Publish war file to nexus') {
+    stage('Publish war file to Nexus') {
       steps{
         echo "Publish war file to Nexus Maven-Releases repository..."
         nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: 'war', filePath: '/home/jenkins/agent/workspace/time_tracker/web/target/time-tracker-web-0.3.1.war']], mavenCoordinate: [artifactId: 'time-tracker-parent', groupId: 'clinic.programming.time-tracker', packaging: 'war', version: '0.3.1']]]      
@@ -74,25 +72,27 @@ pipeline {
       steps{
         container('docker') {
           echo "Creating Docker image..."
+          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
 /*          script{
                   docker.withRegistry('http://192.168.99.100:30008/repository/myOwnDocker-Registry', 'nexus_cred') {
                   time_tracker_Image = docker.build("time-tracker:0.3.1")
                   time_tracker_Image.push()
                   }
                 }*/        
-          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
-          //echo "time_tracker_image: ${time_tracker_image}"
         }
       }
     }
-    
     stage('Upload Docker to Nexus Repository') {
       steps{
         container('docker') {
           echo "Uploading Docker image to Nexus Repository..."
-          sh 'docker push http://192.168.99.100:30008/repository/myOwnDocker-Registry/sharon/time-tracker'
+          withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
+            def registry_url = "http://nexus-docker.minikube"
+            sh 'docker login -u $USER -p $PASS ${registry_url}'
+            sh 'docker push http://nexus-docker.minikube:5003/repository/myOwnDocker-Registry/sharon/time-tracker'
           //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
-        }
+          }
+        }   
       }
     }
 /*    post {
@@ -109,19 +109,6 @@ pipeline {
         }
     }
 */    
-/*    stage('build && SonarQube analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                        sh 'mvn clean install sonar:sonar'
-                  sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                  }
-*/       
-//                withSonarQubeEnv('SonarQube') {
-//                    sh "${scannerHome}/bin/sonar-scanner"
-//                }
-//                timeout(time: 10, unit: 'MINUTES') {
-//                   waitForQualityGate abortPipeline: true
-//                }
+
   }
 }
