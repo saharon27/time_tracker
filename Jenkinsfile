@@ -85,12 +85,12 @@ pipeline {
       steps{
         container('docker') {
           echo "Uploading Docker image to Nexus Repository..."
-          withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
-            sh 'docker login -u $USER -p $PASSWORD nexus-docker.minikube'
+          //withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
+          //  sh 'docker login -u $USER -p $PASSWORD nexus-docker.minikube'
             sh 'docker image tag sharon/time-tracker nexus-docker.minikube/time-tracker'
             sh 'docker push nexus-docker.minikube/time-tracker'
           //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
-          }
+        //  }
         }   
       }
     }
