@@ -86,9 +86,9 @@ pipeline {
         container('docker') {
           echo "Uploading Docker image to Nexus Repository..."
           withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
-            def registry_url = "http://nexus-docker.minikube"
-            sh 'docker login -u $USER -p $PASS ${registry_url}'
-            sh 'docker push http://nexus-docker.minikube:5003/repository/myOwnDocker-Registry/sharon/time-tracker'
+            sh 'docker login -u $USER -p $PASS nexus-docker.minikube'
+            sh 'docker image tag sharon/time-tracker nexus-docker.minikube/time-tracker
+            sh 'docker push nexus-docker.minikube/time-tracker'
           //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
           }
         }   
