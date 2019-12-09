@@ -51,7 +51,6 @@ pipeline {
       steps {
         echo 'Building Maven...'
         sh 'mvn -Dmaven.test.failure.ignore=true package'
-        }
       }
     }
    stage('SonarQube Analysis') {
