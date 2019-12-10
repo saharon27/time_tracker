@@ -71,13 +71,7 @@ pipeline {
       steps{
         container('docker') {
           echo "Creating Docker image..."
-          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'
-/*          script{
-                  docker.withRegistry('http://192.168.99.100:30008/repository/myOwnDocker-Registry', 'nexus_cred') {
-                  time_tracker_Image = docker.build("time-tracker:0.3.1")
-                  time_tracker_Image.push()
-                  }
-                }*/        
+          sh 'docker build -f DockerFile -t sharon/time-tracker:0.3.1 .'   
         }
       }
     }
@@ -90,7 +84,7 @@ pipeline {
             sh 'docker image tag sharon/time-tracker:0.3.1 nexus-docker.minikube/time-tracker:0.3.1'
             sh 'docker push nexus-docker.minikube/time-tracker:0.3.1'
           //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
-        //  }
+          }
         }   
       }
     }
