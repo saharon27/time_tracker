@@ -61,12 +61,12 @@ pipeline {
       }
      }
     }
-  /*  stage('Publish war file to Nexus') {
+    stage('Publish war file to Nexus') {
       steps{
         echo "Publish war file to Nexus Maven-Releases repository..."
         nexusPublisher nexusInstanceId: 'nexus_server', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: 'war', filePath: '/home/jenkins/agent/workspace/time_tracker/web/target/time-tracker-web-0.3.1.war']], mavenCoordinate: [artifactId: 'time-tracker-parent', groupId: 'clinic.programming.time-tracker', packaging: 'war', version: '0.3.1']]]      
       }
-    }*/
+    }
     stage('Dockerize App') {
       steps{
         container('docker') {
@@ -85,8 +85,8 @@ pipeline {
       steps{
         container('docker') {
           echo "Uploading Docker image to Nexus Repository..."
-          //withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
-          //  sh 'docker login -u $USER -p $PASSWORD nexus-docker.minikube'
+          withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
+            sh 'docker login -u $USER -p $PASSWORD nexus-docker.minikube'
             sh 'docker image tag sharon/time-tracker:0.3.1 nexus-docker.minikube/time-tracker:0.3.1'
             sh 'docker push nexus-docker.minikube/time-tracker:0.3.1'
           //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
