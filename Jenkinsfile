@@ -79,29 +79,27 @@ pipeline {
       steps{
         container('docker') {
           echo "Uploading Docker image to Nexus Repository..."
-          withCredentials([usernamePassword( credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
+          withCredentials([usernamePassword(credentialsId: 'nexus_creds', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
             sh 'docker login -u $USER -p $PASSWORD nexus-docker.minikube'
             sh 'docker image tag sharon/time-tracker:0.3.1 nexus-docker.minikube/time-tracker:0.3.1'
             sh 'docker push nexus-docker.minikube/time-tracker:0.3.1'
-          //sh 'docker rmi $(docker images --filter=reference="NexusDockerRegistryUrl/ImageName*" -q)'
+            sh 'docker rmi $(docker images --filter=reference="nexus-docker.minikube/time-tracker*" -q)'
           }
         }   
       }
     }
-/*    post {
+    post {
       success {
-          mail to: 'team@example.com',
+          mail to: 'sharonisgizmo@yahoo.com',
                   subject: "passed Pipeline: ${currentBuild.fullDisplayName}",
                   body: "Something is OK with ${env.BUILD_URL}"
         }
       failure {
           // notify users when the Pipeline fails
-          mail to: 'team@example.com',
+          mail to: 'sharonisgizmo@yahoo.com',
                   subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
                   body: "Something is wrong with ${env.BUILD_URL}"
         }
     }
-*/    
-
   }
 }
